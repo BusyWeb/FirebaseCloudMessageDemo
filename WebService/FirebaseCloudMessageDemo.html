@@ -1,0 +1,92 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Firebase Cloud Message Demo</title>
+	<meta charset="utf-8" />
+
+    <script src="Scripts/jquery-1.12.4.min.js"></script>
+    <style type="text/css">
+        body {
+            padding: 40px, 40px, 40px, 40px;
+        }
+        div {
+            margin: 20px;
+        }
+    </style>
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            baseUrl = "http://localhost/";
+
+            $("#buttonSend").click(function (e) {
+                var email = $("#email").val();
+                var message = $("#message").val();
+                sendRemoteMessage(email, message);
+            });
+        });
+
+        function sendRemoteMessage(email, message) {
+            var params = {
+                email: email,
+                message: message
+            };
+            $.ajax({
+                type: "POST",
+                url: baseUrl + "FirebaseCloudMessageDemo.asmx/SendRemoteMessage",
+                data: JSON.stringify(params),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                async: true,
+                processData: false,
+                success: function (msg) {
+                    //var val = $.parseJSON(msg);
+                    var val = msg;
+                    var result;
+                    //public class MessageResponse
+                    //{
+                    //    public string multicast_id;
+                    //    public string success;
+                    //    public string failure;
+                    //    public string canonical_ids;
+                    //}
+                    var success = val.success;
+                    var failure = val.failure;
+                    //alert(success + "," + failure);
+
+                    if (success != 0) {
+                        result = "Remote message sent successfully.";
+                    } else {
+                        result = "Failed to send remote message, please try again.";
+                    }
+
+                    alert(result);
+
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert(XMLHttpRequest + ": " + textStatus + ": " + errorThrown);
+                }
+            });
+        }
+    </script>
+</head>
+<body>
+    <div style="margin: 40px;">
+        <h2>Firebase Cloud Message Demo</h2>
+
+        <h4>Send Message to Remote Android Device</h4>
+
+        <div>
+            Remote User Email:&nbsp;
+            <br /><input type="text" id="email" style="width: 300px;" value="busyweb@gmail.com" />
+        </div>
+        <div>
+            Message:&nbsp;
+            <br /><input type="text" id="message" style="width: 300px;" value="Hello, from jQuery..."/>
+        </div>
+        <div>
+            <input type="button" id="buttonSend" value="Send Remote Message" />
+        </div>
+
+    </div>
+</body>
+</html>
