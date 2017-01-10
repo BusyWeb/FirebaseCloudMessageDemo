@@ -350,7 +350,6 @@ public class FirebaseCloudMessageDemo : System.Web.Services.WebService
             {
                 string Authorization = FcmAuthorization;
                 string FcmUrl = "https://fcm.googleapis.com/fcm/send";
-                //var SENDER_ID = "419702449985";
 
                 WebRequest tRequest;
                 tRequest = WebRequest.Create(FcmUrl);
